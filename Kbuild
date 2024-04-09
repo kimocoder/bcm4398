@@ -1,6 +1,6 @@
 # bcmdhd
 #
-# Copyright (C) 2023, Broadcom.
+# Copyright (C) 2024, Broadcom.
 #
 #      Unless you and Broadcom execute a separate written software license
 # agreement governing use of this software, this software is licensed to you
@@ -660,7 +660,7 @@ DHDCFLAGS += -DNDO_CONFIG_SUPPORT
 DHDCFLAGS += -DIPV6_NDO_SUPPORT
 
 #Debugaility
-DHDCFLAGS += -DDBG_PKT_MON -DDBG_PKT_MON_INIT_DEFAULT
+DHDCFLAGS += -DDBG_PKT_MON -DDBG_PKT_MON_INIT_DEFAULT -DDHD_PKT_MON_DUAL_STA
 DHDCFLAGS += -DDNGL_EVENT_SUPPORT -DPARSE_DONGLE_HOST_EVENT
 DHDCFLAGS += -DWL_CFGVENDOR_SEND_ALERT_EVENT
 
@@ -815,6 +815,7 @@ endif
 # For 4389 and 43752
 ifneq ($(filter y, $(CONFIG_BCM4389) $(CONFIG_BCM4398) $(CONFIG_BCM4390) $(CONFIG_BCM4383) $(CONFIG_BCM43752) $(CONFIG_BCM4375) $(CONFIG_BCM4385)),)
     DHDCFLAGS += -DUSE_WL_TXBF
+    DHDCFLAGS += -DCUSTOM_DPC_CPUCORE=0
 
     # New Features
     DHDCFLAGS += -DWL11U
@@ -979,7 +980,9 @@ else ifneq ($(CONFIG_ARCH_HISI),)
 endif
 
 DHDCFLAGS += -DDHD_DEBUG
+DHDCFLAGS += -DDHD_COMPILED=\"$(BCMDHD_ROOT)\"
 DHDCFLAGS += -I$(BCMDHD_ROOT)/include/ -I$(BCMDHD_ROOT)/
+DHDCFLAGS += -Wno-date-time
 ifeq ($(KERNEL_SRC),)
 KBUILD_CFLAGS += -I$(LINUXDIR)/include -I$(CURDIR)
 endif
